@@ -26,6 +26,7 @@
 		CB231A432B4EBAB3001C9E2A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CB4769932B5431C50087BCCC /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 		CBAE5A122B59A74F00A239D5 /* TimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeView.swift; sourceTree = "<group>"; };
+		CBAE5A142B5AC72E00A239D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CBCD86342B565C99008F9A9E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -59,6 +60,7 @@
 		CB231A392B4EBAB0001C9E2A /* pomotimer */ = {
 			isa = PBXGroup;
 			children = (
+				CBAE5A142B5AC72E00A239D5 /* Info.plist */,
 				CB231A4E2B4EBBC6001C9E2A /* ViewModels */,
 				CB231A4D2B4EBBAA001C9E2A /* Misc */,
 				CB231A4C2B4EBB97001C9E2A /* Views */,
@@ -315,6 +317,7 @@
 				DEVELOPMENT_TEAM = S56T35FY35;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = pomotimer/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -344,6 +347,7 @@
 				DEVELOPMENT_TEAM = S56T35FY35;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = pomotimer/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

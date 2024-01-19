@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import UserNotifications
 
 private var timer = Timer
     .publish(every: 1, on: .main, in: .common)
@@ -15,13 +16,13 @@ private var timer = Timer
 struct ContentView: View {
     //Counters for rest and work time
     @State var Counter: Int = 0
-    @State var countTo: Int = 120  //in seconds
+    @State var countTo: Int = 5  //in seconds
     
     @State var secondCounter: Int = 0;
-    @State var restTo: Int = 120 //5 minutes
+    @State var restTo: Int = 5 //5 minutes
     
     //Counter for amount of cycles
-    @State var currentCycle: Int = 1
+    @State var currentCycle: Int = 0
     @State var cycleTo: Int = 3
     
     //buttons
@@ -41,10 +42,10 @@ struct ContentView: View {
     var body: some View {
         NavigationView{
             VStack{
-                Text("Pomodoro cycle #\(currentCycle)")
+                Text("Pomodoro cycle #\(currentCycle + 1)")
                     .font(.largeTitle)
                     .padding(.bottom, 5)
-                Text("\(cycleTo - currentCycle + 2) more left to go")
+                Text("\(cycleTo - currentCycle) more left to go")
                     .font(.title)
                     .padding(.bottom, 20)
                 ZStack{
@@ -117,11 +118,7 @@ struct ContentView: View {
                         
                     //restart button
                     Button {
-                        //maybe create a re-asking window????????
-                        Counter = 0
-                        secondCounter = 0
-                        working = true
-                        timerOn = false
+                        reset()
                     } label: {
                         Text("Restart")
                             .foregroundColor(.white)
@@ -146,20 +143,29 @@ struct ContentView: View {
                 }
             }
             .sheet(isPresented: $showView){
-                SettingsView(settingsPresented: $showView, workTime: $countTo, restTime: $restTo, cycles: $cycleTo, blockSites: $blockSites)
+                SettingsView(
+                    settingsPresented: $showView,
+                    workTime: $countTo,
+                    restTime: $restTo,
+                    cycles: $cycleTo,
+                    blockSites: $blockSites,
+                    currentCycle: $currentCycle
+                )
             }
+            .onAppear( //send notification to user
+                perform: {
+                    UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .sound, .alert]) { (_, _) in
+                    }
+                }
+            )
     }
-        
-        
-            
-            
         .onReceive(timer){ time in      //constantly count up
             if (timerOn){
                 if (working){
-                    self.Counter += 1
+                    Counter += 1
                 }
                 else {
-                    self.secondCounter += 1
+                    secondCounter += 1
                 }
                 
                 if (completed()){   //if work or rest session is over
@@ -171,6 +177,9 @@ struct ContentView: View {
                         buttonColor = buttonMessage
                         timer.upstream.connect().cancel()
                         timerOn = false
+                        
+                        //show notifications
+                        self.notify(type: "Work session finished!")
                     }
                     else {  //if rest is finished
                         secondCounter = 0
@@ -182,21 +191,50 @@ struct ContentView: View {
                         timerOn = false
                         //update cycle number
                         currentCycle += 1
+                        
+                        //show notification
+                        self.notify(type: "Rest session finished!")
                     }
                 }
                 
-                if (currentCycle == cycleTo){
+                if (currentCycle == cycleTo){ // entire session finished
                     //stop timer
                     buttonMessage = !buttonColor
                     buttonColor = buttonMessage
                     timer.upstream.connect().cancel()
                     timerOn = false
                     
+                    //notify
+                    self.notify(type: "All cycles finished!")
                 }
-            }
-        }
+            } // end of if
+        } // end of .onreceive
         
     } // end of body
+    
+    
+    func notify(type: String) {
+        let content = UNMutableNotificationContent()
+        content.title = "Message"
+        content.body = "\(type)"
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        
+        let req = UNNotificationRequest(identifier: "MSG", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(req)
+        
+        
+    }
+    
+    
+    func reset(){
+        Counter = 0
+        secondCounter = 0
+        currentCycle = 0
+        working = true
+        timerOn = false
+    }
     
     func completed() -> Bool {
         return progress() == 1

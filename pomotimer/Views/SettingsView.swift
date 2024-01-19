@@ -23,12 +23,16 @@ struct SettingsView: View {
     @State var which: Bool = true //true is work, false is rest
     
     @Binding var blockSites: Bool
+    @Binding var currentCycle: Int
     
     
     var body: some View {
         NavigationView{
             VStack{
                 Button {
+                    if (currentCycle >= cycles){
+                        currentCycle = 0
+                    }
                     settingsPresented = false
                 } label: {
                     Text("< Back")
@@ -50,7 +54,6 @@ struct SettingsView: View {
                             Button { // for working
                                 which = true
                                 showTimeSettings = true
-                                
                             } label: {
                                 ZStack{
                                     Color(red: 0.7, green: 0.7, blue: 0.7)
@@ -90,17 +93,53 @@ struct SettingsView: View {
                             
                             Spacer()
                             
+                            
                             Picker(selection: $cycles) { // picker for cycles
-                                ForEach(1..<6) { number in
-                                    ZStack{
-                                        Color(red: 0.7, green: 0.7, blue: 0.7)
-                                        Text("\(number)")
-                                            .tag(number)
-                                            .foregroundColor(.white)
-                                    }
-                                    .frame(width: 40)
-                                    .cornerRadius(5)
+                                ZStack{
+                                    Color(red: 0.7, green: 0.7, blue: 0.7)
+                                    Text("1")
+                                        .foregroundColor(.white)
                                 }
+                                .tag(1)
+                                .frame(width: 40)
+                                .cornerRadius(5)
+                                
+                                ZStack{
+                                    Color(red: 0.7, green: 0.7, blue: 0.7)
+                                    Text("2")
+                                        .foregroundColor(.white)
+                                }
+                                .tag(2)
+                                .frame(width: 40)
+                                .cornerRadius(5)
+                                
+                                ZStack{
+                                    Color(red: 0.7, green: 0.7, blue: 0.7)
+                                    Text("3")
+                                        .foregroundColor(.white)
+                                }
+                                .tag(3)
+                                .frame(width: 40)
+                                .cornerRadius(5)
+                                
+                                ZStack{
+                                    Color(red: 0.7, green: 0.7, blue: 0.7)
+                                    Text("4")
+                                        .foregroundColor(.white)
+                                }
+                                .tag(4)
+                                .frame(width: 40)
+                                .cornerRadius(5)
+                                
+                                ZStack{
+                                    Color(red: 0.7, green: 0.7, blue: 0.7)
+                                    Text("5")
+                                        .foregroundColor(.white)
+                                }
+                                .tag(5)
+                                .frame(width: 40)
+                                .cornerRadius(5)
+                                
                             } label: {
                                 EmptyView()
                             }
@@ -113,6 +152,7 @@ struct SettingsView: View {
                             
                         //toggle button for disabling notifications after each session
                         
+
                         
                     } header: {Text("Other")} // end of section
                     
@@ -120,18 +160,17 @@ struct SettingsView: View {
                 .scrollContentBackground(.hidden)
                 .font(.system(size: 14))
                 
-                
-                
-                
             } // end of VStack
-        } // end of navigationView
+        }
         .sheet(isPresented: $showTimeSettings) {
             TimeView(text: (which ? "work" : "rest"), showView: $showTimeSettings, time: (which ? $workTime : $restTime))
-        }
+        }// end of navigationView
 
         
-    }
-}
+    } // end of body
+    
+} // end of struct settingsview
+
 
 
 
@@ -154,6 +193,10 @@ struct SettingsView: View {
         
     }), which: true, blockSites: Binding(get: {
         return false
+    }, set: { _ in
+        
+    }), currentCycle: Binding(get: {
+        return 0
     }, set: { _ in
         
     }))
