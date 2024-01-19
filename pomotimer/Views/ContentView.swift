@@ -13,28 +13,38 @@ private var timer = Timer
     .autoconnect()
 
 struct ContentView: View {
+    //Counters for rest and work time
     @State var Counter: Int = 0
-    var countTo: Int = 5  //in seconds
+    @State var countTo: Int = 120  //in seconds
     
     @State var secondCounter: Int = 0;
-    var restTo: Int = 6 //5 minutes
+    @State var restTo: Int = 120 //5 minutes
+    
+    //Counter for amount of cycles
+    @State var currentCycle: Int = 1
+    @State var cycleTo: Int = 3
     
     //buttons
     @State var buttonMessage = true
     @State var buttonColor = true
     @State var timerOn = false
     @State var working = true
-    
     @State var showView = false
+    
+    
+    //For blocking sites
+    @State var blockSites = false
+    
+    
     
     
     var body: some View {
         NavigationView{
             VStack{
-                Text("Pomodoro cycle #1")
+                Text("Pomodoro cycle #\(currentCycle)")
                     .font(.largeTitle)
                     .padding(.bottom, 5)
-                Text("3 more left to go")
+                Text("\(cycleTo - currentCycle + 2) more left to go")
                     .font(.title)
                     .padding(.bottom, 20)
                 ZStack{
@@ -101,7 +111,6 @@ struct ContentView: View {
                                 timerOn ? Color.orange: Color.yellow
                             )
                             .cornerRadius(5)
-                            
                     }
                         
                     Spacer()
@@ -137,7 +146,7 @@ struct ContentView: View {
                 }
             }
             .sheet(isPresented: $showView){
-                SettingsView(settingsPresented: $showView)
+                SettingsView(settingsPresented: $showView, workTime: $countTo, restTime: $restTo, cycles: $cycleTo, blockSites: $blockSites)
             }
     }
         
@@ -171,7 +180,18 @@ struct ContentView: View {
                         buttonColor = buttonMessage
                         timer.upstream.connect().cancel()
                         timerOn = false
+                        //update cycle number
+                        currentCycle += 1
                     }
+                }
+                
+                if (currentCycle == cycleTo){
+                    //stop timer
+                    buttonMessage = !buttonColor
+                    buttonColor = buttonMessage
+                    timer.upstream.connect().cancel()
+                    timerOn = false
+                    
                 }
             }
         }

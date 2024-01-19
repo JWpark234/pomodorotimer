@@ -13,6 +13,7 @@
 		CB231A412B4EBAB3001C9E2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB231A402B4EBAB3001C9E2A /* Assets.xcassets */; };
 		CB231A442B4EBAB3001C9E2A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB231A432B4EBAB3001C9E2A /* Preview Assets.xcassets */; };
 		CB4769942B5431C50087BCCC /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4769932B5431C50087BCCC /* ContentViewModel.swift */; };
+		CBAE5A132B59A74F00A239D5 /* TimeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAE5A122B59A74F00A239D5 /* TimeView.swift */; };
 		CBCD86352B565C99008F9A9E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCD86342B565C99008F9A9E /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
@@ -24,6 +25,7 @@
 		CB231A402B4EBAB3001C9E2A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CB231A432B4EBAB3001C9E2A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CB4769932B5431C50087BCCC /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
+		CBAE5A122B59A74F00A239D5 /* TimeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeView.swift; sourceTree = "<group>"; };
 		CBCD86342B565C99008F9A9E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -60,17 +62,17 @@
 				CB231A4E2B4EBBC6001C9E2A /* ViewModels */,
 				CB231A4D2B4EBBAA001C9E2A /* Misc */,
 				CB231A4C2B4EBB97001C9E2A /* Views */,
-				CB231A422B4EBAB3001C9E2A /* Preview Content */,
+				CB231A422B4EBAB3001C9E2A /* Content */,
 			);
 			path = pomotimer;
 			sourceTree = "<group>";
 		};
-		CB231A422B4EBAB3001C9E2A /* Preview Content */ = {
+		CB231A422B4EBAB3001C9E2A /* Content */ = {
 			isa = PBXGroup;
 			children = (
 				CB231A432B4EBAB3001C9E2A /* Preview Assets.xcassets */,
 			);
-			path = "Preview Content";
+			path = Content;
 			sourceTree = "<group>";
 		};
 		CB231A4C2B4EBB97001C9E2A /* Views */ = {
@@ -78,6 +80,7 @@
 			children = (
 				CB231A3C2B4EBAB0001C9E2A /* ContentView.swift */,
 				CBCD86342B565C99008F9A9E /* SettingsView.swift */,
+				CBAE5A122B59A74F00A239D5 /* TimeView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -175,6 +178,7 @@
 				CB231A3F2B4EBAB0001C9E2A /* Item.swift in Sources */,
 				CB231A3B2B4EBAB0001C9E2A /* pomotimerApp.swift in Sources */,
 				CB4769942B5431C50087BCCC /* ContentViewModel.swift in Sources */,
+				CBAE5A132B59A74F00A239D5 /* TimeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,7 +311,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"pomotimer/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"pomotimer/Content\"";
 				DEVELOPMENT_TEAM = S56T35FY35;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -336,7 +340,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"pomotimer/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"pomotimer/Content\"";
 				DEVELOPMENT_TEAM = S56T35FY35;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
