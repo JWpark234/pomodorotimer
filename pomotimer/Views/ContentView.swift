@@ -19,7 +19,7 @@ struct ContentView: View {
     @State var countTo: Int = 5  //in seconds
     
     @State var secondCounter: Int = 0;
-    @State var restTo: Int = 5 //5 minutes
+    @State var restTo: Int = 5
     
     //Counter for amount of cycles
     @State var currentCycle: Int = 0
@@ -35,6 +35,9 @@ struct ContentView: View {
     
     //For blocking sites
     @State var blockSites = false
+    
+    //for stopping timer
+    @State var shouldStop = true
     
     
     
@@ -149,7 +152,8 @@ struct ContentView: View {
                     restTime: $restTo,
                     cycles: $cycleTo,
                     blockSites: $blockSites,
-                    currentCycle: $currentCycle
+                    currentCycle: $currentCycle,
+                    shouldStop: $shouldStop
                 )
             }
             .onAppear( //send notification to user
@@ -172,11 +176,6 @@ struct ContentView: View {
                     if (working) {   //if work is finished
                         Counter = 0
                         working = false
-                        //stop (only when setting written)
-                        buttonMessage = !buttonColor
-                        buttonColor = buttonMessage
-                        timer.upstream.connect().cancel()
-                        timerOn = false
                         
                         //show notifications
                         self.notify(type: "Work session finished!")
@@ -184,17 +183,27 @@ struct ContentView: View {
                     else {  //if rest is finished
                         secondCounter = 0
                         working = true
-                        //stop
-                        buttonMessage = !buttonColor
-                        buttonColor = buttonMessage
-                        timer.upstream.connect().cancel()
-                        timerOn = false
+                        
                         //update cycle number
                         currentCycle += 1
                         
                         //show notification
                         self.notify(type: "Rest session finished!")
                     }
+                    
+                    if (shouldStop){
+                        //stop (only when setting written)
+                        buttonMessage = !buttonColor
+                        buttonColor = buttonMessage
+                        timer.upstream.connect().cancel()
+                        timerOn = false
+                    }
+                    
+                    if (currentCycle >= cycleTo){
+                        currentCycle = 0
+                        self.notify(type: "All work cycles finished! Time to take a break :D")
+                    }
+                    
                 }
                 
                 if (currentCycle == cycleTo){ // entire session finished
@@ -215,15 +224,16 @@ struct ContentView: View {
     
     func notify(type: String) {
         let content = UNMutableNotificationContent()
-        content.title = "Message"
-        content.body = "\(type)"
+        content.title = "\(type)"
+        content.sound = .default
+        content.badge = 1
+        
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         
         let req = UNNotificationRequest(identifier: "MSG", content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().add(req)
-        
         
     }
     

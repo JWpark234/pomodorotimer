@@ -24,6 +24,7 @@ struct SettingsView: View {
     
     @Binding var blockSites: Bool
     @Binding var currentCycle: Int
+    @Binding var shouldStop: Bool
     
     
     var body: some View {
@@ -150,9 +151,11 @@ struct SettingsView: View {
                         //toggle button for blocking sites
                         Toggle("Block other apps while focusing", isOn: $blockSites)
                             
-                        //toggle button for disabling notifications after each session
+                        //toggle button for stopping after each session
+                        Toggle("Stop after each work/rest session", isOn: $shouldStop)
                         
-
+                        //toggle button for disabling notifs after each session
+                        
                         
                     } header: {Text("Other")} // end of section
                     
@@ -197,6 +200,10 @@ struct SettingsView: View {
         
     }), currentCycle: Binding(get: {
         return 0
+    }, set: { _ in
+        
+    }), shouldStop: Binding(get: {
+        return true
     }, set: { _ in
         
     }))
