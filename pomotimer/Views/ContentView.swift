@@ -26,8 +26,6 @@ struct ContentView: View {
     @State var cycleTo: Int = 3
     
     //buttons
-    @State var buttonMessage = true
-    @State var buttonColor = true
     @State var timerOn = false
     @State var working = true
     @State var showView = false
@@ -105,6 +103,7 @@ struct ContentView: View {
                         }
                         else{
                             timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+                            
                             timerOn = true
                         }
                     } label: {
@@ -144,7 +143,7 @@ struct ContentView: View {
                     Image(systemName: "plus")
                         .padding(.trailing, 20)
                 }
-            }
+            } // button to show settings
             .sheet(isPresented: $showView){
                 SettingsView(
                     settingsPresented: $showView,
@@ -155,10 +154,11 @@ struct ContentView: View {
                     currentCycle: $currentCycle,
                     shouldStop: $shouldStop
                 )
-            }
+            } // settings sheet
             .onAppear( //send notification to user
                 perform: {
-                    UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .sound, .alert]) { (_, _) in
+                    UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .sound, .alert]) { (granted, error) in
+                        //
                     }
                 }
             )
@@ -193,8 +193,6 @@ struct ContentView: View {
                     
                     if (shouldStop){
                         //stop (only when setting written)
-                        buttonMessage = !buttonColor
-                        buttonColor = buttonMessage
                         timer.upstream.connect().cancel()
                         timerOn = false
                     }
@@ -208,8 +206,6 @@ struct ContentView: View {
                 
                 if (currentCycle == cycleTo){ // entire session finished
                     //stop timer
-                    buttonMessage = !buttonColor
-                    buttonColor = buttonMessage
                     timer.upstream.connect().cancel()
                     timerOn = false
                     
@@ -222,6 +218,8 @@ struct ContentView: View {
     } // end of body
     
     
+    
+    //FUNCTIONS
     func notify(type: String) {
         let content = UNMutableNotificationContent()
         content.title = "\(type)"

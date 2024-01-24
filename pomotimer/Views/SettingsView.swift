@@ -52,36 +52,19 @@ struct SettingsView: View {
                             Text("Working duration")
                                 .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
                             Spacer()
-                            Button { // for working
+                            timeButton(label: workTime) {
                                 which = true
-                                showTimeSettings = true
-                            } label: {
-                                ZStack{
-                                    Color(red: 0.7, green: 0.7, blue: 0.7)
-                                    Text("\(workTime / 60) mins")
-                                        .foregroundColor(.white)
-                                }
-                                .frame(width: 80)
-                                .cornerRadius(5)
                             }
+                            
                         }
                         
                         HStack{ // resting duration
                             Text("Resting duration")
                                 .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
                             Spacer()
-                            Button {
+                            
+                            timeButton(label: restTime) {
                                 which = false
-                                showTimeSettings = true
-                                
-                            } label: {
-                                ZStack{
-                                    Color(red: 0.7, green: 0.7, blue: 0.7)
-                                    Text("\(restTime / 60) mins")
-                                        .foregroundColor(.white)
-                                }
-                                .frame(width: 80)
-                                .cornerRadius(5)
                             }
                         } // end of HStack
                         
@@ -95,57 +78,23 @@ struct SettingsView: View {
                             Spacer()
                             
                             
-                            Picker(selection: $cycles) { // picker for cycles
-                                ZStack{
-                                    Color(red: 0.7, green: 0.7, blue: 0.7)
-                                    Text("1")
-                                        .foregroundColor(.white)
+                            Picker(selection: $cycles) {
+                                ForEach(1...5, id: \.self) { value in
+                                    ZStack{
+                                        Color(red: 0.7, green: 0.7, blue: 0.7)
+                                        Text("\(value)")
+                                            .foregroundColor(.white)
+                                    }
+                                    .tag(value)
+                                    .frame(width: 40)
+                                    .cornerRadius(5)
+                                    .tag(value)
                                 }
-                                .tag(1)
-                                .frame(width: 40)
-                                .cornerRadius(5)
-                                
-                                ZStack{
-                                    Color(red: 0.7, green: 0.7, blue: 0.7)
-                                    Text("2")
-                                        .foregroundColor(.white)
-                                }
-                                .tag(2)
-                                .frame(width: 40)
-                                .cornerRadius(5)
-                                
-                                ZStack{
-                                    Color(red: 0.7, green: 0.7, blue: 0.7)
-                                    Text("3")
-                                        .foregroundColor(.white)
-                                }
-                                .tag(3)
-                                .frame(width: 40)
-                                .cornerRadius(5)
-                                
-                                ZStack{
-                                    Color(red: 0.7, green: 0.7, blue: 0.7)
-                                    Text("4")
-                                        .foregroundColor(.white)
-                                }
-                                .tag(4)
-                                .frame(width: 40)
-                                .cornerRadius(5)
-                                
-                                ZStack{
-                                    Color(red: 0.7, green: 0.7, blue: 0.7)
-                                    Text("5")
-                                        .foregroundColor(.white)
-                                }
-                                .tag(5)
-                                .frame(width: 40)
-                                .cornerRadius(5)
-                                
                             } label: {
                                 EmptyView()
                             }
-                            .pickerStyle(MenuPickerStyle())
-                            
+                            .pickerStyle(MenuPickerStyle()) // picker for cycles
+                    
                         } // end of HStack
                         
                         //toggle button for blocking sites
@@ -155,7 +104,6 @@ struct SettingsView: View {
                         Toggle("Stop after each work/rest session", isOn: $shouldStop)
                         
                         //toggle button for disabling notifs after each session
-                        
                         
                     } header: {Text("Other")} // end of section
                     
@@ -172,39 +120,38 @@ struct SettingsView: View {
         
     } // end of body
     
+    
+    private func timeButton(label: Int, action: @escaping () -> Void) -> some View {
+        Button {
+            showTimeSettings = true
+            action()
+        } label: {
+            ZStack{
+                Color(red: 0.7, green: 0.7, blue: 0.7)
+                Text("\(label / 60) mins")
+                    .foregroundColor(.white)
+            }
+            .frame(width: 80)
+            .cornerRadius(5)
+        }
+    }
+    
+    
+    
 } // end of struct settingsview
 
 
 
 
 #Preview {
-    SettingsView(settingsPresented: Binding(get: {
-        return true
-    }, set: { _ in
-        
-    }), workTime: Binding(get: {
-        return 120
-    }, set: { _ in
-        
-    }), restTime: Binding(get: {
-        return 120
-    }, set: { _ in
-        
-    }), cycles: Binding(get: {
-        return 3
-    }, set: { _ in
-        
-    }), which: true, blockSites: Binding(get: {
-        return false
-    }, set: { _ in
-        
-    }), currentCycle: Binding(get: {
-        return 0
-    }, set: { _ in
-        
-    }), shouldStop: Binding(get: {
-        return true
-    }, set: { _ in
-        
-    }))
+    SettingsView(
+        settingsPresented: .constant(true),
+        workTime: .constant(120),
+        restTime: .constant(120),
+        cycles: .constant(3),
+        which: true,
+        blockSites: .constant(false),
+        currentCycle: .constant(0),
+        shouldStop: .constant(true)
+    )
 }

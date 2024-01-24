@@ -31,7 +31,7 @@ struct TimeView: View {
                 
                 Picker(
                     selection: $time,
-                    label: Text("hello"),
+                    label: Text("Select time in minutes"),
                     content: {
                         ForEach(1..<60) { number in
                             Text("\(number)").tag(number * 60)
@@ -69,6 +69,8 @@ private extension HorizontalAlignment {
     
     static let customCenter = Self(CustomCenter.self)
 }
+
+
 
 #Preview {
     TimeView(text: "working", showView: Binding(get: {
