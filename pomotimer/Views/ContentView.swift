@@ -13,30 +13,32 @@ private var timer = Timer
     .publish(every: 1, on: .main, in: .common)
     .autoconnect()
 
+
+
 struct ContentView: View {
     //Counters for rest and work time
-    @State var Counter: Int = 0
-    @State var countTo: Int = 5  //in seconds
+    @AppStorage("counter") var Counter: Int = 0
+    @AppStorage("workTime") var countTo: Int = 1500
+    //in seconds
     
-    @State var secondCounter: Int = 0;
-    @State var restTo: Int = 5
+    @AppStorage("secondCounter") var secondCounter: Int = 0
+    @AppStorage("restTime") var restTo: Int = 300
     
     //Counter for amount of cycles
-    @State var currentCycle: Int = 0
-    @State var cycleTo: Int = 3
+    @AppStorage("currentCycle") var currentCycle: Int = 0
+    @AppStorage("cycleTo") var cycleTo: Int = 3
     
     //buttons
-    @State var timerOn = false
-    @State var working = true
+    @AppStorage("timerOn") var timerOn: Bool = false
+    @AppStorage("working") var working: Bool = true
     @State var showView = false
     
     
     //For blocking sites
-    @State var blockSites = false
+    @AppStorage("blockSites") var blockSites: Bool = true
     
     //for stopping timer
-    @State var shouldStop = true
-    
+    @AppStorage("shouldStop") var shouldStop: Bool = true
     
     
     
@@ -146,13 +148,7 @@ struct ContentView: View {
             } // button to show settings
             .sheet(isPresented: $showView){
                 SettingsView(
-                    settingsPresented: $showView,
-                    workTime: $countTo,
-                    restTime: $restTo,
-                    cycles: $cycleTo,
-                    blockSites: $blockSites,
-                    currentCycle: $currentCycle,
-                    shouldStop: $shouldStop
+                    settingsPresented: $showView
                 )
             } // settings sheet
             .onAppear( //send notification to user
@@ -199,6 +195,7 @@ struct ContentView: View {
                     
                     if (currentCycle >= cycleTo){
                         currentCycle = 0
+                        timerOn = false
                         self.notify(type: "All work cycles finished! Time to take a break :D")
                     }
                     
@@ -232,7 +229,6 @@ struct ContentView: View {
         let req = UNNotificationRequest(identifier: "MSG", content: content, trigger: trigger)
         
         UNUserNotificationCenter.current().add(req)
-        
     }
     
     

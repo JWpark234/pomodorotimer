@@ -8,13 +8,16 @@
 import SwiftUI
 
 struct TimeView: View {
-    @State var text: String
-    
     @Binding var showView: Bool
-    @Binding var time: Int
+    @State var which: Bool // true = work, false = rest
+    
     
     var body: some View {
-        Text("Set your \(text) time")
+        //variables
+        @AppStorage((which ? "workTime" : "restTime")) var time: Int = 5
+        
+        
+        Text("Set your \((which ? "working" : "resting")) time")
             .font(.title2)
             .bold()
             .padding(.vertical, 50)
@@ -73,13 +76,5 @@ private extension HorizontalAlignment {
 
 
 #Preview {
-    TimeView(text: "working", showView: Binding(get: {
-        return true
-    }, set: { _ in
-        
-    }), time: Binding(get: {
-        return 10
-    }, set: { _ in
-        
-    }))
+    TimeView(showView: .constant(true), which: true)
 }

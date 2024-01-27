@@ -14,24 +14,20 @@ struct SettingsView: View {
     //to show the settings or not
     @Binding var settingsPresented: Bool
     
-    //bindings for updating time
-    @Binding var workTime: Int
-    @Binding var restTime: Int
-    @Binding var cycles: Int
-    
     @State var showTimeSettings: Bool = false
     @State var which: Bool = true //true is work, false is rest
     
-    @Binding var blockSites: Bool
-    @Binding var currentCycle: Int
-    @Binding var shouldStop: Bool
+    @AppStorage("blockSites") var blockSites: Bool = true
+    @AppStorage("shouldStop") var shouldStop: Bool = true
+    @AppStorage("currentCycle") var currentCycle: Int = 0
+    @AppStorage("cycles") private var cycles: Int = 3
     
     
     var body: some View {
         NavigationView{
             VStack{
                 Button {
-                    if (currentCycle >= cycles){
+                    if (currentCycle >= UserDefaults.standard.integer(forKey: "cycles")){
                         currentCycle = 0
                     }
                     settingsPresented = false
@@ -52,7 +48,7 @@ struct SettingsView: View {
                             Text("Working duration")
                                 .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
                             Spacer()
-                            timeButton(label: workTime) {
+                            timeButton(label: UserDefaults.standard.integer(forKey: "workTime")) {
                                 which = true
                             }
                             
@@ -63,7 +59,7 @@ struct SettingsView: View {
                                 .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
                             Spacer()
                             
-                            timeButton(label: restTime) {
+                            timeButton(label: UserDefaults.standard.integer(forKey: "restTime")) {
                                 which = false
                             }
                         } // end of HStack
@@ -114,7 +110,7 @@ struct SettingsView: View {
             } // end of VStack
         }
         .sheet(isPresented: $showTimeSettings) {
-            TimeView(text: (which ? "work" : "rest"), showView: $showTimeSettings, time: (which ? $workTime : $restTime))
+            TimeView(showView: $showTimeSettings, which: which)
         }// end of navigationView
 
         
@@ -146,12 +142,6 @@ struct SettingsView: View {
 #Preview {
     SettingsView(
         settingsPresented: .constant(true),
-        workTime: .constant(120),
-        restTime: .constant(120),
-        cycles: .constant(3),
-        which: true,
-        blockSites: .constant(false),
-        currentCycle: .constant(0),
-        shouldStop: .constant(true)
+        which: true
     )
 }
